@@ -1,11 +1,10 @@
-
 #predefined variables
 rooms = {
-    'Courtyard': {},
-    'Castle': {},
-    'East Wing': {},
-    'West Wing': {},
-    'North Wing': {},
+    'Courtyard': {'North': 'Castle'},
+    'Castle': {'South': 'Courtyard', 'East': 'East Wing', 'West': 'West Wing', 'North': 'North Wing'},
+    'East Wing': {'West': 'Castle'},
+    'West Wing': {'East': 'Castle'},
+    'North Wing': {'South': 'Castle', 'West': 'Tower'},
     'Tower': {},
     '???': {}
 }
@@ -32,17 +31,27 @@ def player_start():
 def roomDesc():
      match roomname:
           case 0 :
-               return ""
-    
-
-
+               return "This is where you begin your adventure.\nYou see paths leading to the Castle."
 
 def player_room(name):
      print("-" * 40)
      print("You are in the " + key_list[name])
      print(roomDesc())
-     input3 = input("ppo")
+     print("Available Moves: " + ', '.join(rooms[key_list[name]].keys()))
+     print("-" * 40)
+     player_move = input("Enter your move:").lower()
+     if player_move != valid_move(player_move):
+          print("invalid move")
 
+def valid_move(move):
+     match roomname:
+          case 0 :
+               if move == 'north':
+                    currentRoom = rooms['Castle']
+                    roomname = 1
+                    return move
+               else:
+                    return 'invalid'
 
      
 #main while loop
